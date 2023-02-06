@@ -13,6 +13,7 @@ const FormOne = () => {
     const updateContext = myContext.userDetails;
 
     const [loading, setLoading] = useState(false);
+    const isNumeric = (value) => /^\d+$/.test(value);
 
     const notify = () => toast.error("Please enter your Pin Number", {
         position: toast.POSITION.TOP_CENTER
@@ -34,7 +35,11 @@ const FormOne = () => {
       const notify5 = () => toast.error("Date Of Birth is not matching, please corret it.", {
         position: toast.POSITION.TOP_CENTER
       });
+      const notify6 = () => toast.error("Enter Pin Number Correctly", {
+        position: toast.POSITION.TOP_CENTER
+      });
     
+
 
     const next = async() => {
         if (updateContext.userPin == null) {
@@ -65,7 +70,12 @@ const FormOne = () => {
                 if(response.data.pin === true) {
                     notify3()
                     setLoading(false)
-                }else if (response.data.pin === false) {
+                }
+                else if(isNumeric(updateContext.userPin)) {
+                  notify6()
+                  setLoading(false)
+                }    
+                else if (response.data.pin === false) {
 
                     const response1 = await axios.post('https://rnitfrs.ap.gov.in/api/v1/validate-student-details',{"student_unique_id":updateContext.userUnique,"student_date_of_birth":updateContext.userDOB},{
                         headers: {
@@ -92,8 +102,7 @@ const FormOne = () => {
                       } else if(response1.data.message === "Student Unique Id and date of birth is not matching, please update details in Jnanabhumi portal") {
                         notify5()
                         setLoading(false)
-                      }
-                      else {
+                      } else {
                         updateContext.setPhone(response1.data.data.mobile_number)
                         updateContext.setSchool_id(response1.data.data.school_id)
                         updateContext.setStudent_id(response1.data.data.student_id)
@@ -136,7 +145,7 @@ const FormOne = () => {
             <form className="flex flex-col items-center space-y-4">
                 <div className='relative'>
                 <span className='absolute flex inset-y-0 items-center pl-3 text-gray-400 pointer-events-none'><FaUser className='mr-2' /></span>
-                <input className="border border-gray-300 outline-none placeholder-gray-400 pl-9 pr-4 py-1 rounded-md transition focus:ring-2 focus:ring-green-300" type="text" placeholder="Pin Number" maxLength="10" required value={userPin} onChange={changeCase} />
+                <input className="border border-gray-300 outline-none placeholder-gray-400 pl-9 pr-4 py-1 rounded-md transition focus:ring-2 focus:ring-green-300" type="text" pattern="^(?=.*[a-zA-Z])[a-zA-Z0-9]+$" placeholder="Pin Number" maxLength="10" required value={userPin} onChange={changeCase} />
                 </div>
                 <div className='relative'>
                 <span className='absolute flex inset-y-0 items-center pl-3 text-gray-400 pointer-events-none'><FaExpeditedssl className='mr-2' /></span>

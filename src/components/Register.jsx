@@ -118,7 +118,8 @@ const Register = () => {
 
               {/* links */}
               <div className='flex flex-col items-center'>
-                <p className='italic mb-2 text-red-500'>**Enter Pin Correctly. Otherwise Data Will be Deleted**</p>
+                <p className='italic  text-red-500'>**Enter Pin Correctly.**</p>
+                <p className='italic mb-2 text-red-500'>**Otherwise Data Will be Deleted.**</p>
                 <p className='italic'>
                   Already have Account?.
                   
